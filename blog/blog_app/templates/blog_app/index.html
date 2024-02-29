@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row row-gap-4">
+    {% for article in articles %}
+    <div class="col-4">
+        <div class="card">
+            {% if article.photo %}
+            <img src="{{ article.photo.url }}" class="card-img-top" alt="...">
+            {% else %}
+            <img src="https://cotton-store.ru/wa-data/public/shop/themes/profitbuy/img/nofoto.jpg" class="card-img-top" alt="...">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text">{{ article.short_description }}</p>
+                <a href="{{ article.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

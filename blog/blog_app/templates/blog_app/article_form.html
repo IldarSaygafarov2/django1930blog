@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+<!-- http://127.0.0.1:8000/create/-->
+<!-- http://127.0.0.1:8000/update/<int:pk>/-->
+{% block title %}
+
+{% if 'create' in request.path %}
+Создать статью
+{% else %}
+Обновить статью
+{% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-dark">Отправить</button>
+</form>
+{% endblock %}

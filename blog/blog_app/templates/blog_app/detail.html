@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ article.title }}
+{% endblock %}
+
+
+{% block content %}
+<div class="card">
+    {% if article.photo %}
+    <img src="{{ article.photo.url }}" class="card-img-top" alt="...">
+    {% else %}
+    <img src="https://cotton-store.ru/wa-data/public/shop/themes/profitbuy/img/nofoto.jpg" class="card-img-top"
+         alt="...">
+    {% endif %}
+
+
+    <div class="card-body">
+        <h5 class="card-title">{{ article.title }}</h5>
+        <p class="card-text">{{ article.full_description }}</p>
+    </div>
+
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <b>Автор:</b>
+                {{ article.author }}
+            </li>
+            <li class="list-group-item"><b>Категория: </b>{{ article.category }}</li>
+            <li class="list-group-item"><b>Добавлено: </b>{{ article.created_at }}</li>
+            <li class="list-group-item"><b>Просмотры: </b>{{ article.views }}</li>
+        </ul>
+    </div>
+
+    <div class="card-footer">
+        {% if request.user == article.author %}
+        <div class="d-flex column-gap-2">
+            <a href="{% url 'update' article.pk %}" class="btn btn-warning">Изменить</a>
+            <a href="{% url 'delete' article.pk %}" class="btn btn-danger">Удалить</a>
+        </div>
+        {% endif %}
+        {% if request.user.is_authenticated and request.user != article.author %}
+        <div class="d-flex column-gap-2">
+            <a href="{% url 'add_vote' obj_type='article' obj_id=article.pk action='add_like' %}"
+               class="btn btn-success">
+                <i class="bi bi-hand-thumbs-up"></i>
+            </a>
+            {{ likes }}
+            <a href="{% url 'add_vote' obj_type='article' obj_id=article.pk action='add_dislike' %}"
+               class="btn btn-danger">
+                <i class="bi bi-hand-thumbs-down"></i>
+            </a>
+            {{ dislikes }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div>
+    <h2 class="text-center">Коментарии</h2>
+    <div class="comments d-flex flex-column">
+        {% for comment in comments %}
+        <div class="card mb-3">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                {{ comment.created_at }}
+                {% if request.user.is_authenticated and request.user != comment.author %}
+                <div class="d-flex column-gap-2 align-items-center">
+                    <a href="{% url 'add_vote' obj_type='comment' obj_id=comment.pk action='add_like' %}"
+                       class="btn btn-success">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                    </a>
+                    {% for key, value in comment_likes.items %}
+                        {% if key == comment.pk and value != 0%}
+                            {{ value }}
+                        {% elif key == comment.pk and value == 0 %}
+                            0
+                        {% endif %}
+                    {% endfor %}
+                    <a href="{% url 'add_vote' obj_type='comment' obj_id=comment.pk action='add_dislike' %}"
+                       class="btn btn-danger">
+                        <i class="bi bi-hand-thumbs-down"></i>
+                    </a>
+                    {% for key, value in comment_dislikes.items %}
+                        {% if key == comment.pk and value != 0 %}
+                            {{ value }}
+                        {% elif key == comment.pk and value == 0 %}
+                            0
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>{{ comment.body }}</p>
+                    <footer class="blockquote-footer"><cite title="{{ comment.author }}">{{ comment.author }}</cite>
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% include 'include/_pagination.html' %}
+    </div>
+    {% if request.user.is_authenticated %}
+    <form action="" class="mt-5" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-dark mt-3">Отправить</button>
+    </form>
+    {% endif %}
+</div>
+
+{% endblock %}

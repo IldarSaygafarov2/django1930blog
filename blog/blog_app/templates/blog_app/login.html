@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Войти
+{% endblock %}
+
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.name }}</label>
+        {% if field.name == 'password' %}
+        <div class="position-relative">
+            {{ field }}
+            <span class="show-password position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%)">
+                <i class="icon bi bi-eye"></i>
+            </span>
+        </div>
+        {% else %}
+        {{ field }}
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
+
+
+{% block extra_script %}
+<script>
+    let passwordInput = document.querySelector('#id_password');
+    let btn = document.querySelector('.show-password');
+    let icon = document.querySelector('.icon');
+
+    btn.addEventListener('click', () => {
+        btn.classList.toggle('active')
+        if (btn.classList.contains('active')) {
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+            passwordInput.setAttribute('type', 'text')
+        } else {
+            icon.classList.add('bi-eye');
+            icon.classList.remove('bi-eye-slash');
+            passwordInput.setAttribute('type', 'password')
+        }
+    })
+</script>
+{% endblock extra_script %}
