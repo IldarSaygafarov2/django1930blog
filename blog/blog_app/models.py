@@ -2,22 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-# Create your models here.
-
-
-# pip uninstall django
-# y
-# pip install django==4.2.8
-
-# python manage.py migrate
-
-"""
-CREATE TABLE blog_app_category (
-    id,
-    name VARCHAR(150) NOT NULL UNIQUE
-)
-"""
-
 
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название категории')
@@ -29,14 +13,6 @@ class Category(models.Model):
         verbose_name = 'Категория'  # Отображение название модельки(класса) в единственном числе
         verbose_name_plural = 'Категории'  # Отображение название модельки(класса) во множественном числе
         ordering = ['name']
-
-# Category.objects.get(pk=1)
-# sport, 1
-# ar1, ar2, ar3
-# Article.objects.filter(category=sport)
-# sport.articles.all()
-
-# None
 
 
 class Article(models.Model):

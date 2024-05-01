@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_2tr0rvm4c=71)621@jy762so5v0^ju2wym$$hlvp#b@we9)32'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # localhost / http://127.0.0.1:8000/
 ALLOWED_HOSTS = [
@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 
-    'blog_app.apps.BlogAppConfig'
+    'blog_app.apps.BlogAppConfig',
+    'blog_api.apps.BlogApiConfig',
 ]
 
 MIDDLEWARE = [
