@@ -14,16 +14,21 @@ class CategorySerializer(serializers.Serializer):
     в сериалайзере, поля из объекта модели будут подставляться в поля сериалайзера
     и конвертироваться в json формат
     """
-    id = serializers.IntegerField()  # поле для id
-    name = serializers.CharField(max_length=150)  # поле для name
+    # поле для id
+    # read_only - делает поле используемым только для чтения, при создании нового объекта данное поле заполнять не нужно
+    id = serializers.IntegerField(read_only=True)
+    # поле для name
+    name = serializers.CharField(max_length=150)
 
     def create(self, validated_data):
         # создание нового объекта
         # validated_data - словарь с данными объекта этой модели для дальнейшего сохранения в БД
-        pass
+        return models.Category.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         # обновление определенного объекта
         # instance - объект предоставленный для обновления
         # validated_data - данные которые нужно поставить вместо тех что были
-        pass
+        instance.name = validated_data['name']
+        instance.save()
+        return instance
