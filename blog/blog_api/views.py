@@ -2,8 +2,9 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from blog_app.models import Category
-from .serializers import CategorySerializer
+
+from blog_app.models import Category, Article
+from .serializers import CategorySerializer, ArticleSerializer
 
 
 @api_view(['GET'])
@@ -54,3 +55,13 @@ def read_category(request, category_id):
     elif request.method == 'DELETE':
         category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET", "POST"])
+def read_articles(request):
+    if request.method == 'GET':
+        articles = Article.objects.all()
+        serializer = ArticleSerializer(articles, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        pass
