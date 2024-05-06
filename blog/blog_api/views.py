@@ -30,7 +30,7 @@ def read_categories(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def read_category(request, category_id):
     """
     Получаем данные определенной категории и сериализуем её.
@@ -51,3 +51,6 @@ def read_category(request, category_id):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'DELETE':
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

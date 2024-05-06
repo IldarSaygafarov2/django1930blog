@@ -12,7 +12,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'  # Отображение название модельки(класса) в единственном числе
         verbose_name_plural = 'Категории'  # Отображение название модельки(класса) во множественном числе
-        ordering = ['name']
+        ordering = ['pk']
 
 
 class Article(models.Model):
